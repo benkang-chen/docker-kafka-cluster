@@ -10,9 +10,9 @@ if [ ! -z "$KAFKA_PORT" ]; then
 fi
 
 # Set the broker id
-if [ ! -z "$KAFKA_ID" ]; then
-    echo "broker id: $KAFKA_ID"
-    sed -r -i "s/(broker.id)=(.*)/\1=$KAFKA_ID/g" $KAFKA_HOME/config/server.properties
+if [ ! -z "$BROKER_ID" ]; then
+    echo "broker id: $BROKER_ID"
+    sed -r -i "s/(broker.id)=(.*)/\1=$BROKER_ID/g" $KAFKA_HOME/config/server.properties
 fi
 
 # Set the zookeeper connect from the environment variable 
