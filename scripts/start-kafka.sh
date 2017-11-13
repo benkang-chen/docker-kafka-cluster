@@ -1,13 +1,15 @@
 #!/bin/sh
 
+if [ -z "$KAFKA_PORT" ]; then
+    KAFKA_PORT=9092
+    echo "advertised port: $KAFKA_PORT"
+fi
+sed -r -i "s/port=(.*)/\1=$KAFKA_PORT/g" $KAFKA_HOME/config/server.properties
+sed -r -i "s|#(listeners)=(.*)|\1=PLAINTEXT://0.0.0.0:$KAFKA_PORT|g" $KAFKA_HOME/config/server.properties
+
 if [ ! -z "$KAFKA_HOST" ]; then
     echo "advertised listeners: PLAINTEXT://$KAFKA_HOST:9092"
-    sed -r -i "s|#(advertised.listeners)=(.*)|\1=PLAINTEXT://$KAFKA_HOST:9092|g" $KAFKA_HOME/config/server.properties
-    sed -r -i "s|#(listeners)=(.*)|\1=PLAINTEXT://0.0.0.0:9092|g" $KAFKA_HOME/config/server.properties
-fi
-if [ ! -z "$KAFKA_PORT" ]; then
-    echo "advertised port: $KAFKA_PORT"
-    sed -r -i "s/9092/$KAFKA_PORT/g" $KAFKA_HOME/config/server.properties
+    sed -r -i "s|#(advertised.listeners)=(.*)|\1=PLAINTEXT://$KAFKA_HOST:$KAFKA_PORT|g" $KAFKA_HOME/config/server.properties
 fi
 
 # Set the broker id
